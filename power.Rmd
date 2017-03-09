@@ -1,0 +1,33 @@
+---
+title: "Power analysis for VR study"
+author: "Jarad Niemi"
+date: "March 9, 2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Cross-over Design
+
+- 5 locations
+- 3 scenarios each with 2 manipulations
+
+```{r}
+library(dplyr)
+
+period1_treatments = c("A1","A2")
+period2_treatments = c("B1","B2")
+period3_treatments = c("C1","C2")
+treatments = c(period1_treatments, 
+         period2_treatments,
+         period3_treatments)
+
+d = expand.grid(p1 = treatments,
+                p2 = treatments,
+                p3 = treatments) %>%
+  filter( substr(p1,1,1) != substr(p2,1,1) & 
+            substr(p1,1,1) != substr(p3,1,1) & 
+            substr(p2,1,1) != substr(p3,1,1) )
+```
