@@ -9,12 +9,77 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Cross-over Design
+The goal of this project to assess decision making by police officers under
+stress. 
+Specifically, we would like to understand the relationship between individual
+police office personality, situation contextual information, and situation 
+stress with decision making timing and accuracy. 
+Toward this end, we have developed 3 virtual reality (VR) scenarios:
 
-- 5 locations
-- 3 scenarios each with 2 manipulations
+1. possible gun shot investigation
+1. something else
+1. office being targeted 
 
-```{r}
+These VR scenarios are designed to increase in stress levels. 
+Each VR scenario will have 2 alternative pieces of contextual information,
+e.g. the SEC of the neighborhood.
+Under each scenario, we will record a variety of responses including time until
+a decision is made, decision choice from a set of options, and cortisol level
+in the police officer. In addition, the police officers will be given a questionairre to address their
+personality traits.
+
+The primary purpose of this document is to explore and suggest a design for the 
+VR study and to assess power for the study. 
+
+## Design
+
+The experiment will be conducted at 5 locations across the US. 
+Due to the similarity in scenarios each office will never see a VR scenario 
+that only differs by contextual information. 
+There are two designs main designs that make sense to me:
+
+- Randomized block design
+- Randomized block cross-over design
+ 
+We may additionally want to block police officers by personality traits in 
+order to reduce the confounding of personality traits with the VR scenarios 
+the officers experience.
+ 
+### Randomized block design
+
+In this design, the location would be a block and each police office would see
+1 VR scenario. 
+Thus, there would be a total of 6 distinct VR scenarios (3 scenarios each with
+2 different contextual versions). 
+Thus, we should think about putting officers in multiples of 6 at each location.
+We should probably also block by time of day, so that we run 6 different 
+scenarios for the first 6 officers and then repeat that process throughout the
+day. 
+Perhaps we could randomize the 6 scenarios according to a latin square in order
+to reduce the effect of ordering (I'm not sure this is really necessary). 
+
+If we additionally want to block on officer personality, 
+we should group officers by personality into X groups and then run the different
+personalities in the same scenario at the same time. 
+This has the downside of confounding scenario with time of day. 
+
+
+### Randomized block cross-over design
+
+If we want to increase the number of VR scenarios each officer sees (due to 
+training or learning by the officer or to more accurately measure stress level),
+then we can consider a cross-over design where each office sees 3 VR scenarios:
+on each of the scenarios listed above with a certain set of contextual 
+information.
+Considering all possible permuations (scenario, contextual information, and 
+order) an officer could see, there are 48 (=6x4x2) different options. 
+Consider blocking by 48 individuals: one for each of these scenarios. 
+
+If we want to incorporate blocking by personality traits, 
+then these 48 individuals should have similar personality traits. 
+This seems hard to enforce. 
+
+```{r, echo=FALSE, eval=FALSE}
 library(dplyr)
 
 period1_treatments = c("A1","A2")
@@ -24,10 +89,44 @@ treatments = c(period1_treatments,
          period2_treatments,
          period3_treatments)
 
-d = expand.grid(p1 = treatments,
+d = expand.grid(p3 = treatments,
                 p2 = treatments,
-                p3 = treatments) %>%
+                p1 = treatments) %>%
+  select(p1,p2,p3) %>%
   filter( substr(p1,1,1) != substr(p2,1,1) & 
             substr(p1,1,1) != substr(p3,1,1) & 
             substr(p2,1,1) != substr(p3,1,1) )
 ```
+
+
+## Analysis
+
+There will be V VR units utilized in the experiment. 
+We should consider the effect of the VR unit.
+
+
+
+## Additional questions
+
+- How many VR units will there be?
+- How many VR scenarios should an officer see? 
+
+    - Use 1 if we want to maximize the amount of personality trait information we have
+    - Use 3 if there is significant training or learning associated with the VR 
+  
+- What is the most important question?
+
+    - trait affect on decision making (use RCBD)
+    - contextual information on decision making (use RCBD. something else?)
+    - stress level on decision making (use Cross-over)
+  
+- How many officers can we reasonably put through the VR scenarios?
+
+    - Does this depend on how many scenarios an officer sees?
+  
+- How can we categorize officers by personality questionairre?
+
+    - How many groups will there be?
+    
+- How much carryover do we expect for a police officer in a subsequent 
+  
